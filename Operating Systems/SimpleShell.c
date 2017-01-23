@@ -47,6 +47,8 @@ int builtInCommands(char *args[], int count){
 	 * exit - leave shell
 	 * fg - foreground a background job
 	 * jobs - list background jobs
+	 *
+	 * Also piping and ls
 	 */
 	int status = 0;
 	int continueStatus = 0;
