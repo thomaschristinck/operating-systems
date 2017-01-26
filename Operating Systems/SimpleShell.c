@@ -20,6 +20,7 @@ struct jobs
 
 int jobNumber;
 
+//Define boolean type
 typedef enum
 {
   false,
@@ -31,13 +32,17 @@ static boolean redirect = true;
 static boolean isPipe = false;
 static char *command1[10];
 static char *command2[10];
+static char *commandRedirect[15];
+static char *filename[15];
 
+//Split pipe command into command1 and command2
 void setPipe(char *args[], int *args_size){
 	int i = 0; int j = 0;
 	//Clear commands
 	memset(command1, '\0', 10);
 	memset(command2, '\0', 10);
 
+	//Split commands
 	while(strcmp(args[i], "|") != 0){
 		command1[i] = args[i];
 		i++;
@@ -49,6 +54,17 @@ void setPipe(char *args[], int *args_size){
 	}
 }
 
+//Split redirect command into command, destination file
+void setRedirection(char *args[]){
+	int i = 0;
+	//Clear commands
+	memset(commandRedirect, '\0', 20);
+	while(strcmp(args[i], ">") != 0){
+		commandRedirect[i] = args[i];
+		i++;
+	}
+	strcpy(filename, args[i+1]);
+}
 
 // This code is given for illustration purposes. You need not include or follow this
 // strictly. Feel free to writer better or bug free code. This example code block does not
@@ -60,9 +76,9 @@ int getcmd(char *prompt, char *args[], int *background) {
 	char *token, *loc, *line = NULL;
 	size_t linecap = 0;
 
-
 	printf("%s", prompt);
 	length = getline(&line, &linecap, stdin);
+
 	if (length <= 0) {
 		exit(-1);
 	} else if (length <= 1){
@@ -114,7 +130,7 @@ int getcmd(char *prompt, char *args[], int *background) {
 	return i;
 }
 
-int builtInCommands(char *args[], int *background, char **arg){
+voidbuiltInCommands(char *args[], int *background, char **arg){
 	/*
 	 * cd - change directory
 	 * pwd - present working directory
@@ -144,9 +160,10 @@ int builtInCommands(char *args[], int *background, char **arg){
 		char *cwd = malloc(sizeof(char) * 100);
 		if (getcwd(cwd, 100)){
 			fprintf(stderr, "%s\n", cwd);
-	        memset(cwd, 0, sizeof(char) * 100);
+	        memset(cwd, '\0', sizeof(char) * 100);
 		} else {
 	       printf("Error getting pwd!");
+	       clear(cwd);
 	    }
 	}
 	//Print list of jobs ("jobs")
@@ -185,8 +202,8 @@ int builtInCommands(char *args[], int *background, char **arg){
 			fprintf(stderr, "No job matching ID found.\n");
 		}
 	}
-	//Send selected job from background to foreground
-	//If the command is to be executed in the child fork...
+
+	//Otherwise, the command should be executed in the child fork...
 	else{
 	pid_t child_pid = fork();
 		if (child_pid == -1) {
@@ -200,17 +217,33 @@ int builtInCommands(char *args[], int *background, char **arg){
 	        	} else {
 	        		exit(EXIT_SUCCESS);
 	        	}
-	     } else {
+	     } else if(child_pid > 0) {
 	    	 if(background == 0){
 	    		 //If background is not specified, the parent waits on child
 	    		 int waitStatus;
 	    		 //Wait on child, return if no child has exited or if child has stopped
-	    		 pid_t pid = waitpid(child_pid, &waitStatus, 0);
+	    		 waitpid(child_pid, &waitStatus, 0);
 	    		 printf("Child exit with code: %d\n", WEXITSTATUS(status));
-	    		 printf("Parent process, child process ID = %zu\n", child_pid);
+	    		 printf("Parent process, child process ID = %zu\n", (size_t) child_pid);
 	    	 } else {
-	    		 //Otherwise setup so child runs in background
+	    		 //Otherwise setup so child runs in background. The first empty spot in jobs
+	    		 //array should be filled with child process
+	    		for(int i = 0; i < jobNumber + 1; i++){
+	    			 if(jobs[i].name == NULL){
+	    				 char *tempName = malloc (strlen (args[0]) + 1);
+	    				 if (tempName == NULL) {
+	    					 return NULL;
+	    				 }
+	    				 strcpy (tempName, args[0]);
+	    				 jobs[i].pid = child_pid;
+	    				 jobs[i].name = tempName;
+	    				 jobNumber++;
+	    				 break;
+	    			 }
+	    		 }
 	    	 }
+	    } else {
+	    	exit(EXIT_FAILURE);
 	    }
 	}
 }
