@@ -33,7 +33,7 @@ static boolean isPipe = false;
 static char *command1[10];
 static char *command2[10];
 static char *commandRedirect[15];
-static char *filename[15];
+static char filename[20];
 
 //Split pipe command into command1 and command2
 void setPipe(char *args[], int *args_size){
@@ -129,8 +129,7 @@ int getcmd(char *prompt, char *args[], int *background) {
 	}
 	return i;
 }
-
-voidbuiltInCommands(char *args[], int *background, char **arg){
+void builtInCommands(char *args[], int *background, char **arg){
 	/*
 	 * cd - change directory
 	 * pwd - present working directory
@@ -163,7 +162,7 @@ voidbuiltInCommands(char *args[], int *background, char **arg){
 	        memset(cwd, '\0', sizeof(char) * 100);
 		} else {
 	       printf("Error getting pwd!");
-	       clear(cwd);
+	       memset(cwd, '\0', sizeof(char) * 100);
 	    }
 	}
 	//Print list of jobs ("jobs")
@@ -232,7 +231,7 @@ voidbuiltInCommands(char *args[], int *background, char **arg){
 	    			 if(jobs[i].name == NULL){
 	    				 char *tempName = malloc (strlen (args[0]) + 1);
 	    				 if (tempName == NULL) {
-	    					 return NULL;
+	    					 perror("Memory allocation error!");
 	    				 }
 	    				 strcpy (tempName, args[0]);
 	    				 jobs[i].pid = child_pid;
