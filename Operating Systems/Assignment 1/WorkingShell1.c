@@ -62,7 +62,8 @@ int setup(char inputBuffer[], char *args[],int *background){
     for (int i = 0; i < length; i++) {
     	switch (inputBuffer[i]){
     		case ' ':
-    		case '\t' : /* argument separators */
+    		case '\t' :
+    			// Argument separators
     			if(start != -1) {
     				args[count] = &inputBuffer[start]; /* set up pointer */
     				count++;
@@ -70,7 +71,8 @@ int setup(char inputBuffer[], char *args[],int *background){
     			inputBuffer[i] = '\0'; /* add a null char; make a C string */
     			start = -1;
     			break;
-    		case '\n': /* should be the final char examined */
+    		case '\n':
+    			// Last char examined
     			if (count == 0 && start == -1) {
     				//If the user presses enter without entering anything
     				return 0;
@@ -82,7 +84,8 @@ int setup(char inputBuffer[], char *args[],int *background){
     			inputBuffer[i] = '\0';
     			args[count] = NULL; /* no more arguments to this command */
     			break;
-    		default : /* some other character */
+    		default :
+    			// Other character
     			if (start == -1)
     				start = i;
     			if (inputBuffer[i] == '&') {
