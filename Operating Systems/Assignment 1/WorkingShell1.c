@@ -238,7 +238,7 @@ int background;
         	} else {
         		//Exit if fork failed with error message
         		perror("Error: Fork failed.\n");
-        		exit(-1);
+        		exit(EXIT_FAILURE);
         	}
         }
   }
