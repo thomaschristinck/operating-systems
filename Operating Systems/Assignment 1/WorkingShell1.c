@@ -23,19 +23,19 @@ jobs[MAX_JOBS];
 
 int jobsIndex = 0;
 
+//Holds the process ID of the foreground
+pid_t foreground_pid;
 
 //Execution function (executes commands)
 void exec(char* args[], int background, int out, int piping);
 
+//Exit routine - tidies up a few leaks
 void exitRoutine();
 
-void intSignalHandler(int signum){
+//Signal handlers
+void sig_int_handler(int sig);
+void sig_susp_handler(int signum);
 
-}
-
-void suspSignalHandler(int signum){
-    printf("Got it.");
-}
 
 // Setup() reads in the next command line, separating it into distinct tokens
 // using '/0' as delimiters. setup() sets args as a null-terminated string.
@@ -192,6 +192,9 @@ void piper(char *args[]){
 
 int main(void)
 {
+    //Signal handling - ignore SIGTSTP always.
+    signal(SIGTSTP, sig_susp_handler);
+    signal(SIGINT, sig_int_handler);
     //Buffer to hold command entered; args holds arguments
     char inputBuffer[MAX_LINE];
     char *args[MAX_LINE/2];
@@ -393,4 +396,24 @@ void exec(char* args[], int background, int out, int piping)
         exit(EXIT_FAILURE);
     }
   }
+}
+
+void sig_int_handler(int sig)
+{
+  if(foreground_pid)
+  {
+    kill(foreground_pid, SIGTERM);
+    foreground_pid=0;
+  }
+  else
+  {
+      //Do something?
+  }
+  fflush(stdout);
+}
+
+void sig_susp_handler(int signum)
+{
+  printf("\nSignal will always be ignored\n");
+  signal(SIGTSTP, SIG_IGN);
 }
