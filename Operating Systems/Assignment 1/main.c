@@ -20,15 +20,12 @@ pid_t foreground_pid;
 //Execution function (executes commands)
 void exec(char* args[], int background, int out, int piping);
 
-//Exit routine - tidies up a few leaks
-void exitRoutine();
-
 //Signal handlers
 void sig_int_handler(int sig);
 void sig_susp_handler(int signum);
 
-// Setup() reads in the next command line, separating it into distinct tokens
-// using '/0' as delimiters. setup() sets args as a null-terminated string.
+// Setup() reads the next command, separating it into distinct tokens
+// using '/0' as delimiters. After setup() args should be a null-terminated string
 
 int setup(char inputBuffer[], char *args[], int *background, int *out, int *piping)
 {
@@ -121,17 +118,9 @@ int setup(char inputBuffer[], char *args[], int *background, int *out, int *pipi
     return 1;
 }
 
-void exitRoutine(){
-  for (int i= 0; i < 1 + jobsIndex; i++)
-  {
-    if (jobs[i].name == NULL)
-    {
-        free(jobs[i].name);
-    }
-  }
-}
-
+//Piping function; creates a pipe and redirects output of command 1 to input of command 2
 void piper(char *args[]){
+    //Set up pipe
     int pipefd[2];
     pipe(pipefd);
     pid_t pipeid;
@@ -142,6 +131,8 @@ void piper(char *args[]){
     int k = 0; 
     command1[0] = args[0];
     command1[1] = NULL;
+    //Build array for second partr of command. Looking over this before submission, I realize
+    //I could have avoided this array setup proces by using execlp()
     command2[0] = NULL;
     while(args[j] != NULL)
     {
@@ -165,9 +156,10 @@ void piper(char *args[]){
     }
     else
     {
+        //Wait for the child, and close writing end in parent
         wait(&pipeid);
         close(pipefd[1]);
-        //Close stdin and redirect
+        //Redirect stdin to pipe
         dup2(pipefd[0], 0);
         close(pipefd[0]);
         execvp(command2[0], command2); 
@@ -196,18 +188,22 @@ int main(void)
         background = 0;
         out = 0;
         piping = 0;
+
+
         printf(" COMMAND->\n");
+
         while(setup(inputBuffer, args, &background, &out, &piping) == 0)
         {
             //Get next command, if the setup fails to properly parse the buffer have user re-enter command
             printf(" COMMAND->\n");
         }
+
         //Execute current command
         exec(args, background, out, piping);
     }
 }
 
-//Execute command specified (background specified if background = 1)
+//Execute command specified (all commands executed here)
 void exec(char* args[], int background, int out, int piping)
 {
     int i;
@@ -287,8 +283,7 @@ void exec(char* args[], int background, int out, int piping)
             //If background == 0, the parent will wait, otherwise returns to the setup() function.*/
             if (!background)
             {
-                printf("Background not requested \n");
-                waitpid(0, NULL, 0);
+                waitpid(pid, NULL, 0);
             }
             else if (to_background(args[0], pid) < 0)
             {
@@ -305,22 +300,22 @@ void exec(char* args[], int background, int out, int piping)
     }
 }
 
+//SIGINT handler. There is a problem here. All processes in the pid group are killed (children
+//in the background and foreground)
 void sig_int_handler(int sig)
 {
   if(foreground_pid)
   {
-    kill(foreground_pid, SIGTERM);
+    kill(foreground_pid, SIGKILL);
     foreground_pid=0;
   }
-  else
-  {
-      //Do something?
-  }
+ 
   fflush(stdout);
 }
 
+//SIGTSTP handler. Simply ignores the signal.
 void sig_susp_handler(int signum)
 {
-  printf("\nSignal will always be ignored\n");
+  printf("\n ****** Signal will always be ignored ****** \n");
   signal(SIGTSTP, SIG_IGN);
 }

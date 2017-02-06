@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+//Tasks relating to jobs put here
+//@authour thomaschristinck
+
 // Struct to hold job information (name and process ID)
 typedef struct
 {
@@ -32,10 +35,10 @@ void* checked_malloc(size_t size)
 
 job construct_job(const char * name, pid_t pid)
 {
-    size_t len = strlen(name);
+   
     job output;
 
-    output.name = (char*) checked_malloc(len);
+    output.name = (char*) checked_malloc(sizeof(char*));
     strcpy(output.name, name);
     output.pid = pid;
 
