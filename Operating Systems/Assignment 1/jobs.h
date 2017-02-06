@@ -8,13 +8,13 @@
 
 void* checked_malloc(size_t size);
 
-// returns ID or -1 if failed
+// Returns ID or -1 if failed
 int to_background(const char * name, pid_t pid);
 
-// returns boolean success
+// Returns boolean success
 bool to_foreground(const char * id_string);
 
-// prints jobs to stdout
+// Prints jobs to stdout
 void print_jobs();
 
 #endif // SHELL_JOBS_H
