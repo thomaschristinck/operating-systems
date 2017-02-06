@@ -101,16 +101,6 @@ int setup(char inputBuffer[], char *args[], int *background, int *out, int *pipi
                 *background = 1;
                 inputBuffer[i] = '\0';
             }
-            else if (inputBuffer[i] == '|')
-            {
-                *piping = 1;
-                inputBuffer[i] = '\0';
-            }
-            else if (inputBuffer[i] == '>')
-            {
-                *out = 1;
-                inputBuffer[i] = '\0';
-            }
         }
     }
     //If too many chars in input
