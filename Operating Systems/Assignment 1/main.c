@@ -1,4 +1,5 @@
 /* Simple Shell ECSE 427 Assignment1
+* @author thomaschristinck
 */
 #include <stdio.h>
 #include <stdlib.h>
