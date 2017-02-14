@@ -89,6 +89,8 @@ int setup(char inputBuffer[], char *args[], int *background, int *out, int *pipi
             inputBuffer[i] = '\0';
             break;
         case '|':
+            //To find which args are before '|' and which are after, declare a pipe index and do something like:
+            //pipeIndex = count;
             *piping = 1;
             inputBuffer[i] = '\0';
             break;
@@ -120,7 +122,7 @@ void piper(char *args[]){
     int k = 0; 
     command1[0] = args[0];
     command1[1] = NULL;
-    //Build array for second partr of command. Looking over this before submission, I realize
+    //Build array for second part of command. Looking over this before submission, I realize
     //I could have avoided this array setup proces by using execlp()
     command2[0] = NULL;
     while(args[j] != NULL)
