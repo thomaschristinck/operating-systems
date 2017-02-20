@@ -56,6 +56,7 @@ int setup(char inputBuffer[], char *args[], int *background, int *out, int *pipi
     {
         switch (inputBuffer[i])
         {
+        case ' ':
         case '\t' :
             // Argument separator
             if(start != -1)
