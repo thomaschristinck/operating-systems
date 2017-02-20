@@ -110,7 +110,7 @@ int main(void)
         char* print = kv_store_read(store, oldkey);
         printf("Key:% d, Args 0: %s, Args 2:%s, Args 3:%s\n\n", oldkey, print, args[2], args[3]);
 
-         char* newstr = "Hello how are you bud?";
+        char* newstr = "Hello how are you bud?";
         int newkey = 20;
         kv_store_write(store, newkey, newstr);
         char* newprint = kv_store_read(store, newkey);
@@ -118,7 +118,7 @@ int main(void)
 
         kv_store_write(store, oldkey, newstr);
         char* lastprint = kv_store_read(store, oldkey);
-          printf("Key:% d, Value read: %s, Args 2:%s, Args 3:%s", oldkey, lastprint, args[2], args[3]);
+        printf("Key:% d, Value read: %s, Args 2:%s, Args 3:%s", oldkey, lastprint, args[2], args[3]);
 
 
        
