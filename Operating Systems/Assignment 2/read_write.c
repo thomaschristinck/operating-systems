@@ -12,7 +12,8 @@
 size_t value_size = 200;
 size_t pod_size = 4 * 200;
 
-int kv_store_create(char* name){
+int kv_store_create(char* name)
+{
 	//Establish connection between file descriptor and shared memory object
 	int fd = shm_open(name, O_CREAT|O_RDWR, S_IRWXU);
 	if (fd == -1)
@@ -23,7 +24,8 @@ int kv_store_create(char* name){
 	return 1;
 }
 
-int kv_store_write(char* name, int key, char* value){
+int kv_store_write(char* name, int key, char* value)
+{
 	if (sizeof(value) > value_size)
 	{
 		printf("String value to be stored is too long! Max is 200 bytes!");
@@ -58,7 +60,8 @@ int kv_store_write(char* name, int key, char* value){
 	return 1;
 }
 
-char* kv_store_read(char* name, int key){
+char* kv_store_read(char* name, int key)
+{
 	//Open the shared memory object
 	int fd = shm_open(name, O_RDONLY, 0);
 	if (fd == -1)
@@ -79,7 +82,8 @@ char* kv_store_read(char* name, int key){
 	
 }
 
-char** kv_store_read_all(char* name, int key){
+char** kv_store_read_all(char* name, int key)
+{
 	char* tempc = "yes";
 	char** tempcp = &tempc;
 	return tempcp;
