@@ -12,6 +12,7 @@ int kv_store_write(char* name, int key, char* value);
 
 //Takes a key and searches for key-value pair. If found, returns a copy of the value (a pointer to the
 //string is returned, NULL if no pair is found)
+//TO DO: Break down pods into sections to store additonal values
 char* kv_store_read(char* name, int key);
 
 //Function should take a key and return all values in the store
