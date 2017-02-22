@@ -12,6 +12,7 @@
 size_t value_size = 200;
 size_t pod_size = 4 * 200;
 
+//Method should set a name accessible by all other functions
 int kv_store_create(char* name)
 {
 	//Establish connection between file descriptor and shared memory object
