@@ -91,7 +91,7 @@ int main(void)
     char inputBuffer[MAX_LINE];
     char* args[MAX_LINE/2];
 
-    char* store = "thomaschristinck1";
+    char* store = "\thomaschristinck1";
     kv_store_create(store);
     // Program terminates normally inside setup
     while (1)
