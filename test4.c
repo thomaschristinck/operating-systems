@@ -33,8 +33,11 @@ int kv_store_create(char* name)
 		return -1;
 	}
 	return 1;
+	//Shared memory should be cleaned here?
 }
 
+//To remove name field for every method, maybe write an "open" function which opens the file with name 
+//and returns the file descriptor
 int kv_store_write(char* name, int key, char* value)
 {
 	if (strlen(value) > VALUE_SIZE)
