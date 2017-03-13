@@ -1,0 +1,15 @@
+NOTES FOR MARKER
+ECSE 427 ASSIGNMENT 2
+
+TEST 1:
+If test 1 fails, please try it again a few more times. It works most of the time, but sometimes FIFO fails, either:
+(1) With a seg fault coming from an invalid write at a2_test.c:149 (not traceable to my program through valgrind).
+(2) With missing values that should have been read, but weren't due to collisions.
+
+At time of submission, my program passes this test perfectly 5 times per 10 trials.
+
+TEST 2:
+The synchronization tests work perfectly with errors of approximately 2 error per 2000 rounds
+
+TEST READ_EVAL:
+Be sure to compile with -lrt and -lpthread. There is a bug here since I don't unlink the shared mem at the end, so you can't reuse shared memory names. (If you do, it'll say something like "can't find sem_write.c").
