@@ -12,7 +12,6 @@
 
 //Max number of chars per line set here
 #define MAX_LINE 80
-
 #include "read_write.h"
 
 // Setup() reads the next command, separating it into distinct tokens
