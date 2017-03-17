@@ -1,5 +1,6 @@
 #include "read_eval.h"
-//NOTE: Not written by me - provided by Professor Muthcumaru on myCourses
+
+//Note this was not written by me: provided on mycourses by Professor Muthcumaru
 
 char** tokenize(char* buffer, const char delimiter) {
     size_t length = strlen(buffer);
