@@ -1,6 +1,6 @@
 # Operating Systems Assignments
 
-This repository is a collection of Operating Systems Assignments I wrote for a class at McGill. Will run on Linux x86_64 machines 
+This repository is a collection of Operating Systems Assignments I wrote for a class at McGill. Each of these folders has a single C file that will run on Linux x86_64 machines. 
 
 ### Assignment 1
 
