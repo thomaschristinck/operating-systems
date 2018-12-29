@@ -1,0 +1,12 @@
+Notes for Marker
+
+-I don't have much to say. Run the attached sfs_api.c. Both tests provided on mycourses should run with 0 errors or warnings (tested on Linux machines 3rd floor Trottier). Valgrind should show no memory leaks.
+
+-I did not implement commit/restore (would have loved to but just didn't have the time).
+
+-I know my code is a bit sloppy, I have some aspects leftover from when I was implementing commit/restore that I may have forgot to clean up. Hopefully it's tidy enough.
+
+-If this is Xiru or the other TA, thanks for a great semester. I learned a lot in OS!
+
+Thomas Christinck
+260601793
