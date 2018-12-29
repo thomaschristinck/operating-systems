@@ -7,12 +7,14 @@ This repository is a collection of Operating Systems Assignments I wrote for a c
 In this assignment I was required to create a C program that implements a shell interface that accepts user commands and executes each command in a separate process. The shell program provides a command prompt, where the user inputs a line of command. The shell is responsible for executing the command.
 Commands I've included are cd (change directory), pwd (present working directory), exit (leave shell), fg (send a background job to the foreground), and jobs (list background jobs). Output redirection via > and command piping via | are also implemented here.
 
+Note there are some issues with this implementation (e.g. killing foreground process via ```cmd ^ C``` kills background processes as well).
+
 1. Clone this repository.
 ```git clone https://github.com/thomaschristinck/Operating-Systems```
 
 2. Go to "/Operating-Systems/Assignment 1" 
 
-3. Compile as ```gcc -g jobs.c -o executable```
+3. Compile as ```gcc -g main.c -o executable```
 
 4. Run as ```./executable``` or, with valgrind, ```valgrind - -leak-check=full ./executable```
 
